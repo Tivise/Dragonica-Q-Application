@@ -126,9 +126,9 @@ def sendquest():
         'quest_name_id': 960000,
         'quest_eventmsg_id': 970000,
         'quest_intromsg_id': 980000,
-        'quest_acceptmsg': 990000,
-        'quest_attentemsg': 110000,
-        'quest_confirmmsg': 120000,
+        'quest_acceptmsg_id': 990000,
+        'quest_attentemsg_id': 110000,
+        'quest_confirmmsg_id': 120000,
         'quest_bloc_id': 130000
     }
     for key, value in tableau.items():
@@ -147,29 +147,27 @@ def sendquest():
     '<NPC OBJECTNO="0" TYPE="ING_DLG" VALUE="601">10002</NPC>\n<NPC OBJECTNO="1" TYPE="INCPARAM" VALUE="601/1">10002</NPC>\n'
     '<NPC OBJECTNO="0" TYPE="PAYER" VALUE="601">10003</NPC>\n</EVENTS>\n'
     f'<OBJECTS TYPE="NOSTEP">\n<OBJECT1 COUNT="1" TEXT="{tableau["quest_eventmsg_id"]}"/>\n</OBJECTS>\n'
-    f'<DIALOGS>\n<DIALOG ID="101" TYPE="PROLOG">\n<BODY TEXT="{talk_dialogue_debut_id}" FACE="{talk_deb_face}"/>\n<SELECT ID="10000" TYPE="ACCEPT" TEXT="500004"></SELECT>\n</DIALOG>\n'
-    f'<DIALOG ID="301">\n<BODY TEXT="{talk_dialogue_accept_id}" FACE="{talk_deb_face}"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
-    f'<DIALOG ID="501">\n<BODY TEXT="{talk_dialogue_encours_id}" FACE="{talk_deb_face}"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
-    f'<DIALOG ID="552">\n<BODY TEXT="{talk_dialogue_confirm_id}" FACE="{talk_end_face}"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
-    f'<DIALOG ID="601" TYPE="COMPLETE">\n<BODY TEXT="{talk_dialogue_confirm_id}" FACE="{talk_end_face}"/>\n<SELECT ID="30999" TYPE="COMPLETE" TEXT="500007"></SELECT>\n</DIALOG>\n'
+    f'<DIALOGS>\n<DIALOG ID="101" TYPE="PROLOG">\n<BODY TEXT="{tableau["quest_intromsg_id"]}" FACE="{npcFace_content.get()}"/>\n<SELECT ID="10000" TYPE="ACCEPT" TEXT="500004"></SELECT>\n</DIALOG>\n'
+    f'<DIALOG ID="301">\n<BODY TEXT="{tableau["quest_acceptmsg_id"]}" FACE="{npcFace_content.get()}"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
+    f'<DIALOG ID="501">\n<BODY TEXT="{tableau["quest_attentemsg_id"]}" FACE="{npcFace_content.get()}"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
+    f'<DIALOG ID="552">\n<BODY TEXT="{tableau["quest_confirmmsg_id"]}" FACE="{npcFaceEnd_content.get()}"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
+    f'<DIALOG ID="601" TYPE="COMPLETE">\n<BODY TEXT="{tableau["quest_confirmmsg_id"]}" FACE="{npcFaceEnd_content.get()}"/>\n<SELECT ID="30999" TYPE="COMPLETE" TEXT="500007"></SELECT>\n</DIALOG>\n'
     '<DIALOG ID="701">\n<BODY TEXT="500017"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
     '<DIALOG ID="801">\n<BODY TEXT="500018"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
-    f'<DIALOG ID="901" TYPE="INFO">\n<BODY TEXT="{talk_questinfo_id}"/>\n</DIALOG>\n'
+    f'<DIALOG ID="901" TYPE="INFO">\n<BODY TEXT="{tableau["quest_bloc_id"]}"/>\n</DIALOG>\n'
     '<DIALOG ID="902">\n<BODY TEXT="502048"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
     '<DIALOG ID="903">\n<BODY TEXT="501835"/>\n<SELECT ID="0" TEXT="500003"></SELECT>\n</DIALOG>\n'
-    '</DIALOGS>\n</QUEST>'
-
-)
-
-
-
-
-
-
-
-
-
-
+    '</DIALOGS>\n</QUEST>')
+    fichier.close()
+    fichier_texte = open('questtexttable.xml', "a", encoding='utf-8')
+    fichier_texte.write(f'<TEXT ID="{tableau["quest_name_id"]}" Text="{questName_content.get()}"/>\n'
+    f'<TEXT ID="{tableau["quest_eventmsg_id"]}" Text="{talkEvent_msg_content.get()}"/>\n'
+    f'<TEXT ID="{tableau["quest_intromsg_id"]}" Text="{talk_msg_intro_content.get()}"/>\n'
+    f'<TEXT ID="{tableau["quest_acceptmsg_id"]}" Text="{talk_msg_accept_content.get()}"/>\n'
+    f'<TEXT ID="{tableau["quest_attentemsg_id"]}" Text="{talk_msg_attente_content.get()}"/>\n'
+    f'<TEXT ID="{tableau["quest_confirmmsg_id"]}" Text="{talk_msg_confirm_content.get()}"/>\n'
+    f'<TEXT ID="{tableau["quest_bloc_id"]}" Text="[Tâche de quête]\n{talk_msg_objectif_content.get()}\n\n[PNJ de validation]\n{talk_msg_validation_content.get()}\n\n[Détails]\n{talk_msg_additionnal_content.get()}"/>\n')
+    fichier_texte.close()
 
 btn_send = Button(fenetre, text="Send", command=sendquest).grid(row=3, column=0)
 
